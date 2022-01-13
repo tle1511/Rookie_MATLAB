@@ -1,0 +1,34 @@
+import mlreportgen.ppt.*
+ppt = Presentation("The Brain.pptx");
+open(ppt);
+
+cd = niftiread("cd.nii.gz");
+ki = niftiread("ki67.nii.gz");
+tc = niftiread("tc.nii.gz");
+
+colormap("gray");
+Adding the slides
+slide1 = add(ppt,"Title Slide");
+replace(slide1,"Title","The Brain");
+
+slide2 = add(ppt,"Title and Content");
+replace(slide2,"Title","Image 40");
+
+cd40 = imagesc(cd(:,:,40));
+saveas(cd40,"cd40.png");
+imgcd40 = Picture("cd40.png");
+imgcd40.Width = "4in";
+imgcd40.Height = "2in";
+
+ki40 = imagesc(ki(:,:,40));
+saveas(ki40,"ki40.png");
+imgki40 = Picture("ki40.png");
+imgki40.Width = "4in";
+imgki40.Height = "2in";
+
+lot = Table({imgcd40, " " , imgki40});
+
+replace(slide2,"Content",lot);
+Close and review
+close(ppt);
+rptview(ppt);
